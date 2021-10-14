@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { InAppBrowser, InAppBrowserOptions} from '@ionic-native/in-app-browser/ngx';
 import { EmailComposer } from '@ionic-native/email-composer/ngx';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { CallNumber } from '@ionic-native/call-number/ngx';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -10,7 +11,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 export class HomePage {
 
-  constructor(private iab: InAppBrowser, private emailComposer:EmailComposer, private camera:Camera) {
+  constructor(private iab: InAppBrowser, private emailComposer:EmailComposer, private camera:Camera,private callNumber: CallNumber) {
     
   }
 
@@ -53,6 +54,12 @@ export class HomePage {
     }, (err) => {
      // Handle error
     });
+    callNumber(){
+      this.callNumber.callNumber("18001010101", true)
+    .then(res => console.log('Launched dialer!', res))
+    .catch(err => console.log('Error launching dialer', err));
+    }
   }
-
+  
 }
+
