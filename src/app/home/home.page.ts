@@ -13,7 +13,8 @@ import { HTTP } from '@ionic-native/http/ngx';
 })
 
 export class HomePage {
-
+  public pokemons;
+  public hayPokemons;
   constructor(private iab: InAppBrowser, private emailComposer:EmailComposer, private camera:Camera,private callNumber: CallNumber,private geolocation: Geolocation,private socialSharing: SocialSharing,private http: HTTP) {
     
   }
@@ -91,8 +92,10 @@ geolocalizacion(){
     });
   }
   apiweb(){
-        this.http.get('http://ionic.io', {}, {})
+        this.http.get('http://pokeapi.io/api/v2/pokemon/ditto/', {}, {})
       .then(data => {
+        this.pokemons=JSON.parse(data.data);
+        this.hayPokemons = true;
 
         console.log(data.status);
         console.log(data.data); // data received by server
