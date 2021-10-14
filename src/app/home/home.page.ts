@@ -3,6 +3,9 @@ import { InAppBrowser, InAppBrowserOptions} from '@ionic-native/in-app-browser/n
 import { EmailComposer } from '@ionic-native/email-composer/ngx';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { CallNumber } from '@ionic-native/call-number/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { HTTP } from '@ionic-native/http/ngx';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -11,7 +14,7 @@ import { CallNumber } from '@ionic-native/call-number/ngx';
 
 export class HomePage {
 
-  constructor(private iab: InAppBrowser, private emailComposer:EmailComposer, private camera:Camera,private callNumber: CallNumber) {
+  constructor(private iab: InAppBrowser, private emailComposer:EmailComposer, private camera:Camera,private callNumber: CallNumber,private geolocation: Geolocation,private socialSharing: SocialSharing,private http: HTTP) {
     
   }
 
@@ -54,12 +57,55 @@ export class HomePage {
     }, (err) => {
      // Handle error
     });
-    callNumber(){
-      this.callNumber.callNumber("18001010101", true)
-    .then(res => console.log('Launched dialer!', res))
-    .catch(err => console.log('Error launching dialer', err));
-    }
+   
   }
-  
+
+callnumber(){
+  this.callNumber.callNumber("18001010101", true)
+  .then(res => console.log('Launched dialer!', res))
+  .catch(err => console.log('Error launching dialer', err));
+}
+geolocalizacion(){
+  this.geolocation.getCurrentPosition().then((resp) => {
+      console.log(resp.coords.latitude)
+      console.log(resp.coords.longitude)
+   }).catch((error) => {
+     console.log('Error getting location', error);
+   });
+   
+   let watch = this.geolocation.watchPosition();
+   watch.subscribe((data) => {
+    // data can be a set of coordinates, or an error (if an error occurred).
+    // data.coords.latitude
+    // data.coords.longitude
+   });
+}
+  compartir(){
+
+// Share via email
+    this.socialSharing.share(null,null,null,'Hola Prueba').then(() => {
+  // Success!
+  console.log('Prueba')
+      }).catch(() => {
+        console.log('Error!')
+    });
+  }
+  apiweb(){
+        this.http.get('http://ionic.io', {}, {})
+      .then(data => {
+
+        console.log(data.status);
+        console.log(data.data); // data received by server
+        console.log(data.headers);
+
+      })
+      .catch(error => {
+
+        console.log(error.status);
+        console.log(error.error); // error message as string
+        console.log(error.headers);
+
+      });
+  }
 }
 
