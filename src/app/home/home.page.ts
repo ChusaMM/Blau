@@ -92,11 +92,11 @@ geolocalizacion(){
     });
   }
   apiweb(){
-        this.http.get('http://pokeapi.io/api/v2/pokemon/ditto/', {}, {})
+        this.http.get('https://pokeapi.co/api/v2/pokemon/ditto', {}, {})
       .then(data => {
         this.pokemons=JSON.parse(data.data);
         this.hayPokemons = true;
-
+        console.log(this.pokemons);
         console.log(data.status);
         console.log(data.data); // data received by server
         console.log(data.headers);
@@ -109,6 +109,9 @@ geolocalizacion(){
         console.log(error.headers);
 
       });
+  }
+  poke(){
+    this.pokemons.habilitis();
   }
 }
 
